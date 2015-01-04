@@ -21,6 +21,9 @@ class Highrise(object):
         self._privateToken = privateToken
 	self._printFlag = True
 	self._connection()
+	self._contactDict = self._createContactDict()
+	self._taskDict = self._createTaskDict()
+
        
     def _connection(self):
 	password = 'X'
@@ -28,6 +31,32 @@ class Highrise(object):
 	passmanager.add_password(None, self._url, self._privateToken, password)
 	authhandler = urllib2.HTTPBasicAuthHandler(passmanager)
 	self.opener = urllib2.build_opener(authhandler)
+
+
+
+    def _createContactDict(self):
+        urllib2.install_opener(self.opener)
+        page = urllib2.urlopen("%s/people.xml" % self._url).read()
+        root = ET.fromstring(page)
+
+	contactDict = {}
+        for person in root.findall('person'):
+                name = "%s %s" % ( person.find('first-name').text, person.find('last-name').text)
+                contactDict[person.find('id').text] = name
+
+        return contactDict	
+
+
+    def _createTaskDict(self):
+        urllib2.install_opener(self.opener)
+        page = urllib2.urlopen("%s/tasks.xml" % self._url).read()
+        root = ET.fromstring(page)
+
+        taskDict = {}
+        for task in root.findall('task'):
+                taskDict[task.find('body').text] = task.find('author-id').text
+
+        return taskDict
 
 
     def listContacts(self):
@@ -39,8 +68,10 @@ class Highrise(object):
 	for person in root.findall('person'):
 		name = "%s %s" % ( person.find('first-name').text, person.find('last-name').text)
 		contactList.append(name)
+		self._contactDict[name] = person.find('author-id').text
 
 	self.printTable(contactList)
+	print self._contactDict
 	
         return 
 
@@ -52,21 +83,13 @@ class Highrise(object):
         print "Give the contact details to be created\n\n\n"
 
         firstName = raw_input("Please Enter the First Name of the contact to be created: ")
-
         lastName = raw_input("Please Enter the Last Name of the contact to be created: ")
-
         title = raw_input("Please Enter the Title of the contact to be created: ")
 
-
 	xmlTemplate = People()._getPeopleTemplate()
-
 	data = {'first-name': firstName, 'last-name': lastName, 'title': title}
-
-
 	xml_string =  xmlTemplate%data
-
 	url = "%s/people.xml" % self._url
-
 
 	try:
 	        urllib2.install_opener(self.opener)
@@ -82,12 +105,33 @@ class Highrise(object):
 	return
 
 
+    def createAutoTask(self, id):
+	body = "Task for user %s" % (self._contactList[id])
+        dueAt = raw_input("Please Enter the Due At date for the task : ")
+        title = raw_input("Please Enter the Title of the contact to  ")
+	
+
+
 
     def createTask(self):
 	return
 
 
     def listTasks(self):
+        taskList = []
+        urllib2.install_opener(self.opener)
+        page = urllib2.urlopen("%s/tasks.xml" % self._url).read()
+        root = ET.fromstring(page)
+
+        for task in root.findall('task'):
+		if task.find('subject-id').text is not None :
+	                taskString = "%s | %s | %s | %s" % ( task.find('body').text, task.find('created-at').text,  self._contactDict[task.find('subject-id').text], task.find('due-at').text)
+		else:
+	                taskString = "%s | %s | %s" % ( task.find('body').text, task.find('created-at').text, task.find('due-at').text)
+
+       	        taskList.append(taskString)
+
+        self.printTable(taskList)
 	return
 
 

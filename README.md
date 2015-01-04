@@ -3,16 +3,17 @@ highrise
 
 
 System requirement:
+===================
 
 Linux OS (any flavour, 12.04 LTS preferred)
 
 python > 2.6
 
-python-requests (sudo apt-get install python-requests)
 python-urllib (sudo apt-get install python-urllib)
 
 
 Tool Access:
+============
 
 You can access the tool using github
 
@@ -25,7 +26,7 @@ highrise>
 
 How to run the Tool:
 
-highrise> python highrise.py
+highrise> python run.py
 
 Welcome to the HighRise User Management tool
 What would you like to do today?
@@ -44,18 +45,19 @@ Please Select Operation[1-6]:
 
 
 
-Currently on the (option 1) is working.  User can select to list the contacts for the following account:
+Uer can select to list the contacts for the following account:
 
 https://organization223.highrisehq.com
 
 
-(I have created a dummy account here with username/password as such:   ddhariwal/0p3nb00t)
+(I have created a dummy account here with username/password as such:   ddhariwal/*****)
 
 
 
 How to customize it to use for yourself:
+========================================
 
-For now you can change the parameters in highrise.py file to enter your url and login details. Later plan to change the highrise.py as a module and write a separate script for configs, but for now this is what I have.
+For now you can change the parameters in run.py file to enter your url and login details. 
 
 
 In main function change the following highlighted in RED:

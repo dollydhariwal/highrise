@@ -22,3 +22,5 @@ class People(object):
     def _getPeopleTemplate(self):
 
 	return self._peopleXml
+
+
