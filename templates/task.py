@@ -14,7 +14,6 @@ class Task(object):
         self._taskXml = """
     <task>
 	<body>%(body)s</body>
-	<category-id type="integer">%(category-id)s</category-id>
 	<public type="boolean">%(type)s</public>
 	<due-at>%(due-at)s</due-at>
 	<subject-id>%(subject-id)s</subject-id>
