@@ -8,6 +8,7 @@ import xml.etree.ElementTree as ET
 sys.path.insert(1, '%s/templates' % os.getcwd())
 from people import *
 from task import *
+from note import *
 
 class Highrise(object):
     """Represents a Highrise server connection"""
@@ -162,8 +163,28 @@ class Highrise(object):
         return
 
 
-	return
+    def createAutoNote(self, sender):
+	subjectId = '224261450'
+        user = self._contactDict()[subjectId]
+        body = "Note from user %s" % (sender)
+        noteType = "New pic uploaded"
 
+        xmlTemplate = Note()._getNoteTemplate()
+        data = {'body': body, 'type': noteType, 'subject': subjectId}
+        xml_string = xmlTemplate%data
+        url = "%s/people/%s-tom-jerry/notes.xml" % (self._url,subjectId)
+
+        try:
+                req = urllib2.Request(url=url,
+                      data=xml_string,
+                      headers={'Content-Type': 'application/xml'})
+                urllib2.urlopen(req)
+                print "The note has been successfully created for user %s \n\n" % (user)
+        except:
+                print "The tool was not able to create a note for user %s \n\n" % (user)
+
+        return
+	
 
     def listTasks(self):
         taskList = []
