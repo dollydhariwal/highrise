@@ -11,6 +11,16 @@ python > 2.6
 
 python-urllib (sudo apt-get install python-urllib)
 
+Create dropbox app on App Console:
+https://www.dropbox.com/developers/apps
+
+Install python SDK for dropbox:
+https://www.dropbox.com/developers/core/sdks/python
+
+Install python SDK for Zillow:
+https://pypi.python.org/packages/source/p/pyzillow/pyzillow-0.0.3.tar.gz
+unzip and run "python setup.py install"
+
 
 Tool Access:
 ============
@@ -87,3 +97,14 @@ def main(argv=sys.argv):
 
 1. The url is basically the url provided to you by highrise.
 2. The token you can find from here:  http://welovehighriseblog.wordpress.com/2012/02/14/faq-where-can-i-find-my-highrise-api-token/
+
+
+How to get Zillow api token:
+============================
+
+First create the login
+
+Use the below link to get the token 
+http://www.zillow.com/webservice/Registration.htm
+
+
